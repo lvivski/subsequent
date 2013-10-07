@@ -1,0 +1,10 @@
+{
+  "name": "subsequent",
+  "version": "0.0.1",
+  "scripts": {
+    "prepublish": "make -B"
+  },
+  "devDependencies": {
+    "uglify-js": "*"
+  }
+}
