@@ -1,20 +1,30 @@
 (function(global) {
   "use strict";
-  var nextTick = function(next) {
+  var nextTick = function(next, callbacks) {
+    callbacks = [];
+    function enqueue(fn) {
+      return callbacks.push(fn) === 1;
+    }
+    function execute() {
+      var i = 0;
+      while (i < callbacks.length) {
+        callbacks[i++]();
+      }
+      callbacks.length = 0;
+    }
     if (typeof setImmediate === "function") {
       next = function(fn) {
-        setImmediate(fn);
+        enqueue(fn) && setImmediate(execute);
       };
     } else if (typeof process === "object" && process.nextTick) {
       next = function(fn) {
-        process.nextTick(fn);
+        enqueue(fn) && process.nextTick(execute);
       };
     } else if (global.postMessage) {
-      var PRE = "__subsequent", RE = new RegExp(PRE, "i"), calls = [], onMessage = function(e) {
-        if (RE.test(e.data)) {
+      var message = "__subsequent", onMessage = function(e) {
+        if (e.data === message) {
           e.stopPropagation && e.stopPropagation();
-          calls[e.data]();
-          delete calls[e.data];
+          execute();
         }
       };
       if (global.addEventListener) {
@@ -23,13 +33,11 @@
         global.attachEvent("onmessage", onMessage);
       }
       next = function(fn) {
-        var handle = PRE + Math.random();
-        calls[handle] = fn;
-        global.postMessage(handle, "*");
+        enqueue(fn) && global.postMessage(message, "*");
       };
     } else {
       next = function(fn) {
-        setTimeout(fn, 0);
+        enqueue(fn) && setTimeout(execute, 0);
       };
     }
     return next;
