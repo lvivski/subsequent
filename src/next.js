@@ -1,14 +1,20 @@
-var nextTick = function (next, callbacks) {
-	callbacks = []
+var nextTick = function (next, buffer, length, tick) {
+	buffer = new Array(1000)
+	length = 0
 	function enqueue(fn) {
-		return callbacks.push(fn) === 1
+		buffer[length++] = fn
+		if (!tick) {
+			return tick = true
+		}
 	}
 	function execute() {
 		var i = 0
-		while(i < callbacks.length) {
-			callbacks[i++]()
+		while (i < length) {
+			buffer[i]()
+			buffer[i++] = undefined
 		}
-		callbacks.length = 0
+		length = 0
+		tick = false
 	}
 	if (typeof setImmediate === 'function') { // IE10+, Node > 0.10
 		next = function (fn) {
