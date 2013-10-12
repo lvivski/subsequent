@@ -2,7 +2,11 @@ var nextTick = function (next, buffer, length, tick) {
 	buffer = new Array(10000)
 	length = 0
 	function enqueue(fn) {
-		buffer[length++] = fn
+		if (length === buffer.length) {
+			length = buffer.push(fn)
+		} else {
+			buffer[length++] = fn
+		}
 		if (!tick) {
 			return tick = true
 		}
