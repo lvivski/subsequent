@@ -1,7 +1,7 @@
 (function(global) {
   "use strict";
   var nextTick = function(next, buffer, length, tick) {
-    buffer = new Array(1e3);
+    buffer = new Array(1e4);
     length = 0;
     function enqueue(fn) {
       buffer[length++] = fn;

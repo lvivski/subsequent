@@ -1,5 +1,5 @@
 var nextTick = function (next, buffer, length, tick) {
-	buffer = new Array(1000)
+	buffer = new Array(10000)
 	length = 0
 	function enqueue(fn) {
 		buffer[length++] = fn
