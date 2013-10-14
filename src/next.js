@@ -1,24 +1,14 @@
-var nextTick = function (next, buffer, length, tick) {
-	buffer = new Array(10000)
-	length = 0
+var nextTick = function (next, buffer) {
+	buffer = []
 	function enqueue(fn) {
-		if (length === buffer.length) {
-			length = buffer.push(fn)
-		} else {
-			buffer[length++] = fn
-		}
-		if (!tick) {
-			return tick = true
-		}
+		return buffer.push(fn) === 1
 	}
 	function execute() {
-		var i = 0
-		while (i < length) {
-			buffer[i]()
-			buffer[i++] = undefined
+		var i = 0, b = buffer, l = b.length
+		buffer = []
+		while (i < l) {
+			b[i++]()
 		}
-		length = 0
-		tick = false
 	}
 	if (typeof setImmediate === 'function') { // IE10+, Node > 0.10
 		next = function (fn) {
