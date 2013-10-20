@@ -1,0 +1,7 @@
+{
+	"name": "subsequent",
+	"version": "0.0.3",
+	"main": [
+		"subsequent.js"
+	]
+}

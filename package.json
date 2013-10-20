@@ -1,6 +1,7 @@
 {
 	"name": "subsequent",
 	"version": "0.0.3",
+	"author": "Yehor Lvivski <lvivski@gmail.com>",
 	"keywords": [
 		"async",
 		"immediate",
@@ -9,7 +10,12 @@
 	"scripts": {
 		"prepublish": "make -B"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lvivski/subsequent.git"
+	},
 	"devDependencies": {
 		"uglify-js": "*"
-	}
+	},
+	"license": "MIT"
 }
