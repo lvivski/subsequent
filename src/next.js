@@ -1,4 +1,4 @@
-var nextTick = function (next, buffer, length, tick) {
+var next = function (next, buffer, length, tick) {
 	buffer = new Array(10000)
 	length = 0
 	function enqueue(fn) {

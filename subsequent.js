@@ -1,6 +1,6 @@
 (function(global) {
   "use strict";
-  var nextTick = function(next, buffer, length, tick) {
+  var next = function(next, buffer, length, tick) {
     buffer = new Array(1e4);
     length = 0;
     function enqueue(fn) {
@@ -54,11 +54,11 @@
   }();
   if (typeof define === "function" && define.amd) {
     define(function() {
-      return nextTick;
+      return next;
     });
   } else if (typeof module === "object" && module.exports) {
-    module.exports = nextTick;
+    module.exports = next;
   } else {
-    global.subsequent = global.nextTick = nextTick;
+    global.subsequent = next;
   }
 })(this);
