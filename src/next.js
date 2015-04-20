@@ -1,4 +1,4 @@
-var next = function (next, buffer, length, tick) {
+var nextTick = function (nextTick, buffer, length, tick) {
 	buffer = new Array(10000)
 	length = 0
 	function enqueue(fn) {
@@ -21,11 +21,11 @@ var next = function (next, buffer, length, tick) {
 		tick = false
 	}
 	if (typeof setImmediate === 'function') { // IE10+, Node > 0.10
-		next = function (fn) {
+		nextTick = function (fn) {
 			enqueue(fn) && setImmediate(execute)
 		}
 	} else if (typeof process === 'object' && process.nextTick) { // Node < 0.10
-		next = function (fn) {
+		nextTick = function (fn) {
 			enqueue(fn) && process.nextTick(execute)
 		}
 	} else if (global.postMessage) { // Modern browsers
@@ -42,13 +42,13 @@ var next = function (next, buffer, length, tick) {
 		} else {
 			global.attachEvent('onmessage', onMessage)
 		}
-		next = function (fn) {
+		nextTick = function (fn) {
 			enqueue(fn) && global.postMessage(message, '*')
 		}
 	} else { // Old browsers
-		next = function (fn) {
+		nextTick = function (fn) {
 			enqueue(fn) && setTimeout(execute, 0)
 		}
 	}
-	return next
+	return nextTick
 }()

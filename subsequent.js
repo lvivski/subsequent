@@ -1,6 +1,6 @@
 (function(global) {
   "use strict";
-  var next = function(next, buffer, length, tick) {
+  var nextTick = function(nextTick, buffer, length, tick) {
     buffer = new Array(1e4);
     length = 0;
     function enqueue(fn) {
@@ -23,11 +23,11 @@
       tick = false;
     }
     if (typeof setImmediate === "function") {
-      next = function(fn) {
+      nextTick = function(fn) {
         enqueue(fn) && setImmediate(execute);
       };
     } else if (typeof process === "object" && process.nextTick) {
-      next = function(fn) {
+      nextTick = function(fn) {
         enqueue(fn) && process.nextTick(execute);
       };
     } else if (global.postMessage) {
@@ -42,23 +42,23 @@
       } else {
         global.attachEvent("onmessage", onMessage);
       }
-      next = function(fn) {
+      nextTick = function(fn) {
         enqueue(fn) && global.postMessage(message, "*");
       };
     } else {
-      next = function(fn) {
+      nextTick = function(fn) {
         enqueue(fn) && setTimeout(execute, 0);
       };
     }
-    return next;
+    return nextTick;
   }();
   if (typeof define === "function" && define.amd) {
     define(function() {
-      return next;
+      return nextTick;
     });
   } else if (typeof module === "object" && module.exports) {
-    module.exports = next;
+    module.exports = nextTick;
   } else {
-    global.subsequent = next;
+    global.subsequent = nextTick;
   }
 })(this);

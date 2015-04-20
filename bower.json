@@ -1,14 +1,14 @@
 {
-	"name": "subsequent",
-	"version": "0.0.6",
-	"main": [
-		"subsequent.js"
-	],
-	"ignore": [
-		".*",
-		"src",
-		"Makefile",
-		"index.js",
-		"package.json"
-	]
+  "name": "subsequent",
+  "version": "0.1.0",
+  "main": [
+    "subsequent.js"
+  ],
+  "ignore": [
+    ".*",
+    "src",
+    "Makefile",
+    "index.js",
+    "package.json"
+  ]
 }

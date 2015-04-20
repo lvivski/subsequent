@@ -1,9 +1,9 @@
 if (typeof define === 'function' && define.amd) {
 	define(function() {
-		return next
+		return nextTick
 	})
 } else if (typeof module === 'object' && module.exports) {
-	module.exports = next
+	module.exports = nextTick
 } else {
-	global.subsequent = next
+	global.subsequent = nextTick
 }
