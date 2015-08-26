@@ -30,7 +30,7 @@
       nextTick = function(fn) {
         enqueue(fn) && process.nextTick(execute);
       };
-    } else if (global.postMessage) {
+    } else if (global && global.postMessage) {
       var message = "__subsequent", onMessage = function(e) {
         if (e.data === message) {
           e.stopPropagation && e.stopPropagation();

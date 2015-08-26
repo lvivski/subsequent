@@ -28,7 +28,7 @@ var nextTick = function (nextTick, buffer, length, tick) {
 		nextTick = function (fn) {
 			enqueue(fn) && process.nextTick(execute)
 		}
-	} else if (global.postMessage) { // Modern browsers
+	} else if (global && global.postMessage) { // Modern browsers
 		var message = '__subsequent',
 		    onMessage = function (e) {
 		    	if (e.data === message) {
