@@ -1,4 +1,4 @@
-(function(global) {
+(function(root) {
   "use strict";
   var nextTick = function(nextTick, buffer, length, tick) {
     buffer = new Array(1e4);
@@ -30,20 +30,20 @@
       nextTick = function(fn) {
         enqueue(fn) && process.nextTick(execute);
       };
-    } else if (global && global.postMessage) {
+    } else if (root.postMessage) {
       var message = "__subsequent", onMessage = function(e) {
         if (e.data === message) {
           e.stopPropagation && e.stopPropagation();
           execute();
         }
       };
-      if (global.addEventListener) {
-        global.addEventListener("message", onMessage, true);
+      if (root.addEventListener) {
+        root.addEventListener("message", onMessage, true);
       } else {
-        global.attachEvent("onmessage", onMessage);
+        root.attachEvent("onmessage", onMessage);
       }
       nextTick = function(fn) {
-        enqueue(fn) && global.postMessage(message, "*");
+        enqueue(fn) && root.postMessage(message, "*");
       };
     } else {
       nextTick = function(fn) {
@@ -59,6 +59,6 @@
   } else if (typeof module === "object" && module.exports) {
     module.exports = nextTick;
   } else {
-    global.subsequent = nextTick;
+    root.subsequent = nextTick;
   }
-})(this);
+})(Function("return this")());

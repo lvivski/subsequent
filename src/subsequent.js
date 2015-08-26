@@ -5,5 +5,5 @@ if (typeof define === 'function' && define.amd) {
 } else if (typeof module === 'object' && module.exports) {
 	module.exports = nextTick
 } else {
-	global.subsequent = nextTick
+	root.subsequent = nextTick
 }

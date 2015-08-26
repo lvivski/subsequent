@@ -28,7 +28,7 @@ var nextTick = function (nextTick, buffer, length, tick) {
 		nextTick = function (fn) {
 			enqueue(fn) && process.nextTick(execute)
 		}
-	} else if (global && global.postMessage) { // Modern browsers
+	} else if (root.postMessage) { // Modern browsers
 		var message = '__subsequent',
 		    onMessage = function (e) {
 		    	if (e.data === message) {
@@ -37,13 +37,13 @@ var nextTick = function (nextTick, buffer, length, tick) {
 		    	}
 		    }
 
-		if (global.addEventListener) {
-			global.addEventListener('message', onMessage, true)
+		if (root.addEventListener) {
+			root.addEventListener('message', onMessage, true)
 		} else {
-			global.attachEvent('onmessage', onMessage)
+			root.attachEvent('onmessage', onMessage)
 		}
 		nextTick = function (fn) {
-			enqueue(fn) && global.postMessage(message, '*')
+			enqueue(fn) && root.postMessage(message, '*')
 		}
 	} else { // Old browsers
 		nextTick = function (fn) {

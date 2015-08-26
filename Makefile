@@ -9,10 +9,10 @@ all: \
 
 subsequent.js: ${FILES}
 	@rm -f $@
-	@echo "(function(global){" > $@.tmp
+	@echo ";(function(root){" > $@.tmp
 	@echo "'use strict'" >> $@.tmp
 	@cat $(filter %.js,$^) >> $@.tmp
-	@echo "}(this))" >> $@.tmp
+	@echo "}(Function('return this')()))" >> $@.tmp
 	@$(JS_COMPILER) $@.tmp -b indent-level=2 -o $@
 	@rm $@.tmp
 	@chmod a-w $@

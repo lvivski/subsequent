@@ -1,2 +1,2 @@
 # Subsequent
-A `setImmediate` polyfill
+A `setImmediate` ponyfill
