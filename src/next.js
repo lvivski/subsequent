@@ -22,28 +22,34 @@ var nextTick = function (nextTick, buffer, length, tick) {
 		tick = false
 	}
 
-	if (typeof setImmediate === 'function') { // IE10+, Node > 0.10
+	// IE10+, Node > 0.10
+	if (typeof setImmediate === 'function') {
 		return function (fn) {
 			enqueue(fn) && setImmediate(execute)
 		}
 	}
-	if (typeof process === 'object' && process.nextTick) { // Node < 0.10
+
+	// Node < 0.10
+	if (typeof process === 'object' && process.nextTick) {
 		return function (fn) {
 			enqueue(fn) && process.nextTick(execute)
 		}
 	}
-	var MutationObserver = root.MutationObserver || root.WebKitMutationObserver; // modern browsers
+
+	// Modern browsers
+	var MutationObserver = root.MutationObserver || root.WebKitMutationObserver
 	if (MutationObserver) {
 		var val = 1,
-			node = document.createTextNode('');
+		    node = document.createTextNode('')
 
-		new MutationObserver(execute).observe(node, { characterData : true });
+		new MutationObserver(execute).observe(node, { characterData : true })
 
 		return function(fn) {
-			enqueue(fn) && (node.data = (val *= -1));
-		};
+			enqueue(fn) && (node.data = (val *= -1))
+		}
 	}
-	if (root.postMessage) { // Modern browsers
+
+	if (root.postMessage) {
 		var isPostMessageAsync = true;
 		if (root.attachEvent) {
 			var checkAsync = function() {
@@ -74,6 +80,25 @@ var nextTick = function (nextTick, buffer, length, tick) {
 		}
 	}
 
+	// IE6-8
+	var document = root.document
+	if ('onreadystatechange' in document.createElement('script')) {
+		var createScript = function () {
+			var script = document.createElement('script')
+			script.onreadystatechange = function () {
+				script.parentNode.removeChild(script)
+				script = script.onreadystatechange = null
+				execute()
+			}
+			(document.documentElement || document.body).appendChild(script)
+		}
+
+		return function (fn) {
+			enqueue(fn) && createScript()
+		}
+	}
+
+	// Fallback
 	return function (fn) {
 		enqueue(fn) && setTimeout(execute, 0)
 	}
