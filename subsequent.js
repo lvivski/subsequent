@@ -69,6 +69,20 @@
         };
       }
     }
+    var document = root.document;
+    if ("onreadystatechange" in document.createElement("script")) {
+      var createScript = function() {
+        var script = document.createElement("script");
+        script.onreadystatechange = function() {
+          script.parentNode.removeChild(script);
+          script = script.onreadystatechange = null;
+          execute();
+        }(document.documentElement || document.body).appendChild(script);
+      };
+      return function(fn) {
+        enqueue(fn) && createScript();
+      };
+    }
     return function(fn) {
       enqueue(fn) && setTimeout(execute, 0);
     };
