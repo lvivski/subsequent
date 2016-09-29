@@ -38,7 +38,7 @@ var nextTick = function (nextTick, buffer, length, tick) {
 
 	// Modern browsers
 	var MutationObserver = root.MutationObserver || root.WebKitMutationObserver
-	if (MutationObserver) {
+	if (typeof MutationObserver !== 'undefined') {
 		var val = 1,
 		    node = document.createTextNode('')
 
