@@ -40,7 +40,7 @@ var nextTick = function (nextTick, buffer, length, tick) {
 	var MutationObserver = root.MutationObserver
 	if (typeof MutationObserver !== 'undefined') {
 		var val = 1,
-		    node = document.createTextNode('')
+		    node = root.document.createTextNode('')
 
 		new MutationObserver(execute).observe(node, { characterData : true })
 

@@ -32,9 +32,9 @@
         enqueue(fn) && process.nextTick(execute);
       };
     }
-    var MutationObserver = root.MutationObserver || root.WebKitMutationObserver;
-    if (MutationObserver) {
-      var val = 1, node = document.createTextNode("");
+    var MutationObserver = root.MutationObserver;
+    if (typeof MutationObserver !== "undefined") {
+      var val = 1, node = root.document.createTextNode("");
       new MutationObserver(execute).observe(node, {
         characterData: true
       });
