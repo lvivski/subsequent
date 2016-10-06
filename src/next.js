@@ -90,7 +90,7 @@ var nextTick = function (nextTick, buffer, length, tick) {
 				script = script.onreadystatechange = null
 				execute()
 			}
-			(document.documentElement || document.body).appendChild(script)
+			;(document.documentElement || document.body).appendChild(script)
 		}
 
 		return function (fn) {
