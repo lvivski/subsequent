@@ -77,7 +77,8 @@
           script.parentNode.removeChild(script);
           script = script.onreadystatechange = null;
           execute();
-        }(document.documentElement || document.body).appendChild(script);
+        };
+        (document.documentElement || document.body).appendChild(script);
       };
       return function(fn) {
         enqueue(fn) && createScript();
